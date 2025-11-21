@@ -2,6 +2,10 @@ import { Component, OnInit, ElementRef } from '@angular/core';
 import { ROUTES } from '../sidebar/sidebar.component';
 import { Location, LocationStrategy, PathLocationStrategy } from '@angular/common';
 import { Router } from '@angular/router';
+import { User } from 'src/app/models/User';
+import { SecurityService } from 'src/app/services/security.service';
+import { Subscription } from 'rxjs';
+import { WebSocketService } from 'src/app/services/web-socket-service.service';
 
 @Component({
   selector: 'app-navbar',
@@ -12,8 +16,23 @@ export class NavbarComponent implements OnInit {
   public focus;
   public listTitles: any[];
   public location: Location;
-  constructor(location: Location,  private element: ElementRef, private router: Router) {
+  user: User;
+  subscription: Subscription;
+  constructor(location: Location,  
+    private element: ElementRef, 
+    private router: Router,
+    public securityService: SecurityService,
+    private webSocketService: WebSocketService) {
     this.location = location;
+    this.subscription = this.securityService.getUser().subscribe(data => {
+      this.user = data;
+    })
+
+    this.webSocketService.setNameEvent("ABC123");
+    this.webSocketService.callback.subscribe((message) => {
+      console.log("Mensaje recibido en el navbar: ", message);
+    });
+    
   }
 
   ngOnInit() {
