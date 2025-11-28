@@ -5,8 +5,13 @@ import { Routes, RouterModule } from '@angular/router';
 
 import { AdminLayoutComponent } from './layouts/admin-layout/admin-layout.component';
 import { AuthLayoutComponent } from './layouts/auth-layout/auth-layout.component';
+import { TrackingComponent } from './pages/tracking/tracking.component';
 
 const routes: Routes =[
+  {
+    path: 'tracking',
+    component: TrackingComponent
+  },
   {
     path: '',
     redirectTo: 'dashboard',

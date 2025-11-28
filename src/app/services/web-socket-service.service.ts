@@ -1,38 +1,46 @@
 import { EventEmitter, Injectable } from '@angular/core';
-import { Socket } from 'ngx-socket-io';
+import { io, Socket } from "socket.io-client";
 import { environment } from 'src/environments/environment';
-import { SecurityService } from './security.service';
-
 
 @Injectable({
   providedIn: 'root'
 })
-export class WebSocketService extends Socket {
-  callback: EventEmitter<any> = new EventEmitter();
-  nameEvent: string;
-  constructor(private securityService: SecurityService) {
-    const userId = securityService.activeUserSession?.email || ''; // Asegúrate de que no sea nulo
-    super({
-      url: environment.url_web_socket,
-      options: {
-        query: {
-          "user_id": userId
-        }
-      }
-    })
-    this.nameEvent = ""
-    //this.listen()
+export class WebSocketService {
+
+  private socket!: Socket;
+  callback: EventEmitter<any> = new EventEmitter<any>();
+  nameEvent: string = "";
+
+  constructor() {
+    console.warn(">>> WebSocketService constructor EJECUTADO <<<");
+
+    this.socket = io(environment.url_web_socket, {
+      transports: ['websocket'],     // 🔥 SOLO websocket
+      autoConnect: true,             // 🔥 no polling
+      upgrade: false                 // 🔥 no intenta cambiar transport
+    });
+
+    this.socket.on("connect", () => {
+      console.log("WS conectado", this.socket.id);
+    });
+
+    this.socket.on("disconnect", () => {
+      console.log("WS desconectado");
+    });
   }
+
   setNameEvent(nameEvent: string) {
-    this.nameEvent = nameEvent
-    this.listen()
+    this.nameEvent = nameEvent;
+    this.listen();
   }
-  listen = () => {
-    this.ioSocket.on(this.nameEvent, (res: any) => this.callback.emit(res))
+
+  private listen() {
+    this.socket.on(this.nameEvent, (res: any) => {
+      this.callback.emit(res);
+    });
   }
-  // Para llamar este método es necesario inyectar el servicio
-  // y enviar el payload
-  // emitEvent=(payload={})=>{
-  //   this.ioSocket.emit(this.nameEvent,payload)
-  // }
+
+  emitEvent(payload: any = {}) {
+    this.socket.emit(this.nameEvent, payload);
+  }
 }

@@ -13,6 +13,9 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AppRoutingModule } from './app.routing';
 import { ComponentsModule } from './components/components.module';
 import { AuthInterceptor } from './interceptors/auth.interceptor';
+import { WebSocketService } from './services/web-socket-service.service';
+import { TrackingComponent } from './pages/tracking/tracking.component';
+
 
 
 @NgModule({
@@ -28,9 +31,11 @@ import { AuthInterceptor } from './interceptors/auth.interceptor';
   declarations: [
     AppComponent,
     AdminLayoutComponent,
-    AuthLayoutComponent
+    AuthLayoutComponent,
+    TrackingComponent
   ],
   providers: [
+    WebSocketService,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,
