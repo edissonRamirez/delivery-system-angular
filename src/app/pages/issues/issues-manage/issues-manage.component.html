@@ -1,0 +1,9 @@
+<p>issues-manage works!</p>
+<app-generic-manage
+  [title]="title"
+  [singular]="'Issue'"
+  [fields]="fields"
+  [initialValue]="issues"
+  (save)="onSave($event)"
+  (cancel)="onCancel()">
+</app-generic-manage>

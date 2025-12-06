@@ -15,6 +15,8 @@ import { ComponentsModule } from './components/components.module';
 import { AuthInterceptor } from './interceptors/auth.interceptor';
 import { WebSocketService } from './services/web-socket-service.service';
 import { TrackingComponent } from './pages/tracking/tracking.component';
+import { MotorcycleListComponent } from './pages/motorcycles/motorcycles-list/motorcycles-list.component';
+import { MotorcyclesManageComponent } from './pages/motorcycles/motorcycles-manage/motorcycles-manage.component';
 
 
 
