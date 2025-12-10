@@ -17,6 +17,7 @@ import { WebSocketService } from './services/web-socket-service.service';
 import { TrackingComponent } from './pages/tracking/tracking.component';
 import { MotorcycleListComponent } from './pages/motorcycles/motorcycles-list/motorcycles-list.component';
 import { MotorcyclesManageComponent } from './pages/motorcycles/motorcycles-manage/motorcycles-manage.component';
+import { AddRestaurantTypesComponent } from 'src/app/pages/restaurant-types/add-restaurant-types/add-restaurant-types.component'
 
 
 

@@ -1,0 +1,54 @@
+<div class="container mt-4">
+
+  <h2 class="mb-3">Asignar Región a Restaurante</h2>
+
+  <form [formGroup]="form">
+
+    <!-- RESTAURANT ID -->
+    <div class="form-group mb-3">
+      <label for="restaurant_id">ID del Restaurante</label>
+      <input
+        type="number"
+        id="restaurant_id"
+        formControlName="restaurant_id"
+        class="form-control"
+        placeholder="Ingrese el ID del restaurante"
+      >
+
+      <!-- Mensajes de validación -->
+      <div *ngIf="restaurant_id?.invalid && restaurant_id?.touched" class="text-danger mt-1">
+        <small *ngIf="restaurant_id?.errors?.['required']">Este campo es obligatorio.</small>
+        <small *ngIf="restaurant_id?.errors?.['pattern']">Debe ser un número válido.</small>
+      </div>
+    </div>
+
+    <!-- REGION ID -->
+    <div class="form-group mb-3">
+      <label for="region_id">ID de la Región</label>
+      <input
+        type="number"
+        id="region_id"
+        formControlName="region_id"
+        class="form-control"
+        placeholder="Ingrese el ID de la región"
+      >
+
+      <!-- Mensajes de validación -->
+      <div *ngIf="region_id?.invalid && region_id?.touched" class="text-danger mt-1">
+        <small *ngIf="region_id?.errors?.['required']">Este campo es obligatorio.</small>
+        <small *ngIf="region_id?.errors?.['pattern']">Debe ser un número válido.</small>
+      </div>
+    </div>
+
+    <!-- BOTÓN CREAR -->
+    <button
+      class="btn btn-primary"
+      [disabled]="form.invalid"
+      (click)="AddRegionToRestaurant()"
+    >
+      Crear
+    </button>
+
+  </form>
+
+</div>

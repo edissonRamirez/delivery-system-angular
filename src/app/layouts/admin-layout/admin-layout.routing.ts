@@ -65,6 +65,14 @@ export const AdminLayoutRoutes: Routes = [
                 path: 'photos',
                 canActivate: [AuthenticationGuard],
                 loadChildren: () => import('src/app/pages/photos/photos.module').then(m => m.PhotosModule)
+            },
+
+            // ⭐ NUEVA RUTA AÑADIDA AQUÍ ⭐
+            {
+                path: 'restauranttypes',
+                canActivate: [AuthenticationGuard],
+                loadChildren: () => import('src/app/pages/restaurant-types/restaurant-types.module')
+                    .then(m => m.RestaurantTypesModule)
             }
         ]
     }
