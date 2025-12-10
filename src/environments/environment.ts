@@ -6,7 +6,15 @@ export const environment = {
   production: false,
   url_backend: "https://2a326101-99a7-41ba-95c0-3b84e4c35c34.mock.pstmn.io",
   url_security: "https://b644ca29-b559-4216-b08f-cb8d86333f4b.mock.pstmn.io",
-  url_web_socket: "http://localhost:5000"
+  url_web_socket: "http://localhost:5000",
+  firebase: {
+    apiKey: "AIzaSyB06Inj1NUHSwtPTzZKlUxgN82YbSmsNQQ",
+    authDomain: "delivery-system-auth.firebaseapp.com",
+    projectId: "delivery-system-auth",
+    storageBucket: "delivery-system-auth.firebasestorage.app",
+    messagingSenderId: "770870984180",
+    appId: "1:770870984180:web:e46f837ccbab4f0b808da1",
+  }
 };
 
 /*

@@ -1,3 +1,4 @@
+<!-- HEADER TOP BAR ARGON -->
 <div class="header bg-gradient-primary pb-8 pt-5 pt-md-8"></div>
 
 <div class="container-fluid mt--7">
@@ -6,7 +7,7 @@
 
       <div class="card bg-secondary shadow">
 
-        <!-- HEADER -->
+        <!-- CARD HEADER -->
         <div class="card-header bg-white border-0">
           <div class="d-flex justify-content-between align-items-center">
             <h3 class="mb-0">{{ title }}</h3>
@@ -17,10 +18,13 @@
           </div>
         </div>
 
-        <!-- BODY -->
+        <!-- CARD BODY -->
         <div class="card-body">
 
-          <!-- FORM ONLY IF NOT DELETE -->
+          <!-- 📌 CONTENIDO INSERTADO DESDE EL PADRE (ej: botón mapa) -->
+          <ng-content select="[before-form]"></ng-content>
+
+          <!-- FORMULARIO (si no es delete) -->
           <form *ngIf="mode !== 'delete'" [formGroup]="form" (ngSubmit)="onSubmit()">
 
             <h6 class="heading-small text-muted mb-4">
@@ -53,23 +57,27 @@
                 </textarea>
 
                 <!-- CURRENCY -->
-                <input *ngIf="f.type === 'currency'" class="form-control" type="text"
-                  [value]="form.get(f.name)?.value | currency:'COP':'symbol-narrow':'1.0-0'" (input)="onCurrencyInput($event, f.name)"
-                  [ngClass]="{'is-invalid': submitted && form.get(f.name)?.invalid}" />
+                <input 
+                  *ngIf="f.type === 'currency'"
+                  class="form-control"
+                  type="text"
+                  [value]="form.get(f.name)?.value | currency:'COP':'symbol-narrow':'1.0-0'"
+                  (input)="onCurrencyInput($event, f.name)"
+                  [ngClass]="{'is-invalid': submitted && form.get(f.name)?.invalid}"
+                />
 
                 <!-- SELECT -->
                 <select 
                   *ngIf="f.type === 'select'" 
                   class="form-control"
                   [formControlName]="f.name"
-                  [ngClass]="{'is-invalid': submitted && form.get(f.name)?.invalid}"
-                >
+                  [ngClass]="{'is-invalid': submitted && form.get(f.name)?.invalid}">
+                  
                   <option value="">Seleccione...</option>
 
                   <option 
                     *ngFor="let op of f.options"
-                    [value]="f.optionValue ? op[f.optionValue] : op"
-                  >
+                    [value]="f.optionValue ? op[f.optionValue] : op">
                     {{ f.optionLabel ? op[f.optionLabel] : op }}
                   </option>
                 </select>
@@ -82,12 +90,12 @@
                   (change)="onFileSelected($event, f.name)"
                 />
 
-                <!-- ERROR -->
+                <!-- ERROR MENSAJE -->
                 <div class="invalid-feedback" *ngIf="submitted && form.get(f.name)?.invalid">
                   Este campo es obligatorio o inválido.
                 </div>
 
-              </div>
+              </div> <!-- END FOR EACH FIELD -->
 
             </div>
 
@@ -118,13 +126,11 @@
               </button>
 
             </div>
-
           </div>
 
-        </div>
+        </div> <!-- END CARD BODY -->
 
       </div>
-
     </div>
   </div>
 </div>

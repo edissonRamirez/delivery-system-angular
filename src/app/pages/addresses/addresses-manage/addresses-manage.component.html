@@ -1,8 +1,23 @@
 <app-generic-manage
   [title]="title"
-  [singular]="'Address'"
   [fields]="fields"
   [initialValue]="address"
   (save)="onSave($event)"
   (cancel)="onCancel()">
+
+  <!-- BOTÓN -->
+  <div before-form class="mb-3">
+    <button class="btn btn-info" (click)="openMapPicker()">
+      📍 Agregar desde el mapa
+    </button>
+  </div>
+
+  <!-- MAP PICKER -->
+  <app-map-picker
+    *ngIf="showMap"
+    before-form
+    (selected)="setMapLocation($event)"
+    (cancel)="showMap = false">
+  </app-map-picker>
+
 </app-generic-manage>

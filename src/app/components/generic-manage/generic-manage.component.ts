@@ -20,7 +20,7 @@ export interface ManageFieldConfig {
   imports: [CommonModule, ReactiveFormsModule, FormsModule],
   templateUrl: './generic-manage.component.html',
 })
-export class GenericManageComponent implements OnInit, OnChanges  {
+export class GenericManageComponent implements OnInit, OnChanges {
 
   @Input() title: string = '';
   @Input() singular: string = 'Elemento';
@@ -33,15 +33,19 @@ export class GenericManageComponent implements OnInit, OnChanges  {
   @Output() cancel = new EventEmitter<void>();
 
   form!: FormGroup;
-  submitted: boolean = false;
-  files: { [key: string]: File | null } = {};
+  submitted = false;
+  files: Record<string, File | null> = {};
 
   constructor(private fb: FormBuilder) {}
 
   ngOnInit(): void {
+    if (this.mode !== 'delete') {
+      this.buildForm();
+    }
+  }
 
-    if (this.mode === 'delete') return;
-
+  /** Construye el formulario dinámico */
+  private buildForm() {
     const group: any = {};
 
     this.fields.forEach(f => {
@@ -54,13 +58,26 @@ export class GenericManageComponent implements OnInit, OnChanges  {
     this.form = this.fb.group(group);
   }
 
-  onCurrencyInput(event: any, fieldName: string) {
-    const raw = event.target.value.replace(/\D+/g, ""); // solo números
+  /** Detecta cambios en fields o initialValue */
+  ngOnChanges(changes: SimpleChanges): void {
 
+    // Reconstruir formulario al cambiar fields
+    if (changes['fields'] && !changes['fields'].firstChange) {
+      this.buildForm();
+    }
+
+    // Actualizar valores al cambiar initialValue
+    if (changes['initialValue'] && this.initialValue && this.form) {
+      this.form.patchValue(this.initialValue);
+    }
+  }
+
+  /** Controlador de inputs tipo moneda */
+  onCurrencyInput(event: any, fieldName: string) {
+    const raw = event.target.value.replace(/\D+/g, '');
     const numericValue = Number(raw);
     this.form.get(fieldName)?.setValue(numericValue);
 
-    // formatear como pesos
     event.target.value = new Intl.NumberFormat('es-CO', {
       style: 'currency',
       currency: 'COP',
@@ -68,18 +85,12 @@ export class GenericManageComponent implements OnInit, OnChanges  {
     }).format(numericValue);
   }
 
-
   onFileSelected(event: any, fieldName: string) {
     const file = event.target.files[0];
     this.files[fieldName] = file;
   }
 
-  ngOnChanges(changes: SimpleChanges): void {
-    if (changes['initialValue'] && this.initialValue && this.form) {
-      this.form.patchValue(this.initialValue);
-    }
-  }
-
+  /** Submit final */
   onSubmit() {
     this.submitted = true;
     if (this.form.invalid) return;
@@ -89,14 +100,12 @@ export class GenericManageComponent implements OnInit, OnChanges  {
     const formData = new FormData();
     Object.entries(data).forEach(([key, value]) => formData.append(key, value as any));
 
-    Object.keys(this.files).forEach(key => {
-      if (this.files[key]) {
-        formData.append(key, this.files[key]!, this.files[key]!.name);
-      }
+    Object.entries(this.files).forEach(([key, file]) => {
+      if (file) formData.append(key, file, file.name);
     });
 
     const hasFiles = Object.keys(this.files).length > 0;
-    this.save.emit(hasFiles ? formData : this.form.value);
+    this.save.emit(hasFiles ? formData : data);
   }
 
   onDelete() {

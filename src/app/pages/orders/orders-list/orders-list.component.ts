@@ -1,54 +1,77 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { GenericTableComponent } from '../../../components/generic-table/generic-table.component';
 import { OrderService } from '../../../services/order.service';
-import { Order } from '../../../models/Order';
+import { Router } from '@angular/router';
+import Swal from 'sweetalert2';
 
 @Component({
-  selector: 'app-order-list',
+  selector: 'app-orders-list',
   standalone: true,
   imports: [CommonModule, GenericTableComponent],
-  templateUrl: './orders-list.component.html',
-  styleUrls: ['./orders-list.component.scss']
+  templateUrl: './orders-list.component.html'
 })
-export class OrderListComponent implements OnInit {
+export class OrdersListComponent implements OnInit {
+
+  viewMode: 'table' | 'cards' = 'table';
 
   columns = [
-    { header: 'Product Name', field: 'product_name' },
-    { header: 'ID Cliente', field: 'customer_id' },
-    { header: 'Menú', field: 'menu_id' },
-    { header: 'Motocicleta', field: 'motorcycle_id' },
-    { header: 'Cantidad', field: 'quantity' },
-    { header: 'Total', field: 'total_price' },
-    { header: 'Estado', field: 'status' },
-    
-    
+    { header: 'ID', field: 'id' },
+    { header: 'Cliente', field: 'customer_name' },
+    { header: 'Restaurante', field: 'restaurant_name' },
+    { header: 'Producto', field: 'product_name' },
+    { header: 'Precio Total', field: 'total_price' },
+    { header: 'Estado', field: 'status' }
   ];
 
-  orders: Order[] = [];
+  orders: any[] = [];
 
   constructor(
     private service: OrderService,
     private router: Router
   ) {}
 
-  ngOnInit(): void {
+  ngOnInit() {
     this.service.getAll().subscribe(res => {
-      this.orders = res;
+      this.orders = res.map(o => ({
+        ...o,
+        // construir lista de productos para la vista de cards
+        products: [
+          {
+            name: o.product_name,
+            price: o.product_price
+          }
+        ]
+      }));
     });
   }
 
   onCreate() {
-    this.router.navigate(['/orders/create']);
+    this.router.navigate(['orders/create']);
   }
 
-  onEdit(item: Order) {
-    this.router.navigate(['/orders/update', item.id]);
+  onEdit(item: any) {
+    this.router.navigate(['orders/update', item.id]);
   }
 
-  onDelete(item: Order) {
-    console.log("Eliminar Orden →", item);
-    // Aquí puedes agregar SweetAlert2 si quieres
+  onDelete(item: any) {
+    Swal.fire({
+      title: '¿Eliminar orden?',
+      text: 'No podrás deshacer esta acción.',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d6d6d6',
+      confirmButtonText: 'Sí, eliminar'
+    }).then(result => {
+      if (result.isConfirmed) {
+        this.service.delete(item.id).subscribe(() => {
+          this.service.getAll().subscribe(res => {
+            this.orders = res;
+          });
+        });
+      }
+    });
   }
+
 }

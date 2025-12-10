@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { RestaurantListComponent } from './restaurant-list.component';
+import { MapPickerComponent } from './map-picker.component';
 
-describe('RestaurantListComponent', () => {
-  let component: RestaurantListComponent;
-  let fixture: ComponentFixture<RestaurantListComponent>;
+describe('MapPickerComponent', () => {
+  let component: MapPickerComponent;
+  let fixture: ComponentFixture<MapPickerComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ RestaurantListComponent ]
+      declarations: [ MapPickerComponent ]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(RestaurantListComponent);
+    fixture = TestBed.createComponent(MapPickerComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

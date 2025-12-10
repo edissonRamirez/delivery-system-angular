@@ -2,9 +2,9 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { OrdersRoutingModule } from './orders-routing.module';
-import { OrderListComponent } from './orders-list/orders-list.component';
 import { OrdersManageComponent } from './orders-manage/orders-manage.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { OrdersListComponent } from './orders-list/orders-list.component';
 
 
 @NgModule({
@@ -12,7 +12,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
   imports: [
     CommonModule,
     OrdersRoutingModule,
-    OrderListComponent,
+    OrdersListComponent,
     OrdersManageComponent,
     FormsModule,
     ReactiveFormsModule,

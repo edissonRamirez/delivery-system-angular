@@ -7,6 +7,7 @@ import { RouterModule } from '@angular/router';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { GenericTableComponent } from './generic-table/generic-table.component';
 import { GenericManageComponent } from './generic-manage/generic-manage.component';
+import { MapPickerComponent } from './map-picker/map-picker.component';
 
 @NgModule({
   imports: [
@@ -14,6 +15,7 @@ import { GenericManageComponent } from './generic-manage/generic-manage.componen
     RouterModule,
     NgbModule,
     GenericTableComponent,
+    MapPickerComponent,
     GenericManageComponent
   ],
   declarations: [

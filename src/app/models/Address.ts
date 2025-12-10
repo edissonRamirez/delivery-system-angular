@@ -7,6 +7,8 @@ export class Address {
     state?: string;
     postal_code?: string;
     additional_info?: string;
+    lat?: number;
+    lng?: number;
 
     // One to One Relationships
     order_id?: number;

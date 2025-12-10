@@ -14,6 +14,7 @@ export class Menu {
     restaurant?: Restaurant;
     product_id?: number;
     product?: Product;
+    product_name?: string;
     
     // One to Many Relationships
     orders?: Order[];

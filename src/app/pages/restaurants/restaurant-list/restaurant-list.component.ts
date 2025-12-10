@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Restaurant } from '../../../models/Restaurant';
 import { RestaurantService } from '../../../services/restaurant.service';
 import { GenericTableComponent } from '../../../components/generic-table/generic-table.component';
 import { Router } from '@angular/router';
@@ -13,14 +12,16 @@ import Swal from 'sweetalert2';
   templateUrl: './restaurant-list.component.html'
 })
 export class RestaurantListComponent implements OnInit {
+
   title = 'Restaurantes';
   singular = 'Restaurante';
+  viewMode: 'table' | 'cards' = 'table';
 
   columns = [
     { header: 'ID', field: 'id' },
-    { header: 'Name', field: 'name' },
-    { header: 'Address', field: 'address' },
-    { header: 'Phone', field: 'phone' },
+    { header: 'Nombre', field: 'name' },
+    { header: 'Dirección', field: 'address' },
+    { header: 'Teléfono', field: 'phone' },
     { header: 'Email', field: 'email' }
   ];
 
@@ -29,7 +30,13 @@ export class RestaurantListComponent implements OnInit {
   constructor(private service: RestaurantService, private router: Router) { }
 
   ngOnInit() {
+    this.load();
+  }
+
+  load() {
     this.service.getAll().subscribe(res => {
+      console.log("RECIBIDO DEL BACKEND:", res);
+      console.log("ES ARRAY?", Array.isArray(res));
       this.data = res;
     });
   }
@@ -42,24 +49,24 @@ export class RestaurantListComponent implements OnInit {
     this.router.navigate(['restaurants/update', item.id]);
   }
 
+  onViewMenu(item: any) {
+    this.router.navigate([`menus/view/${item.id}`]);
+  }
+
   onDelete(item: any) {
     Swal.fire({
-      title: 'Are you sure?',
-      text: 'You won\'t be able to revert this!',
+      title: '¿Seguro que deseas eliminar?',
+      text: 'Esta acción no se puede deshacer.',
       icon: 'warning',
       showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d6d6d6',
-      confirmButtonText: 'Yes, delete it!'
-    }).then((result) => {
+      confirmButtonText: 'Sí, eliminar',
+      cancelButtonText: 'Cancelar'
+    }).then(result => {
       if (result.isConfirmed) {
         this.service.delete(item.id).subscribe(() => {
-          this.service.getAll().subscribe(res => {
-            this.data = res;
-          });
+          this.load();
         });
       }
     });
   }
-
 }

@@ -41,6 +41,10 @@ export class MenuListComponent implements OnInit {
     this.router.navigate(['menus/update', item.id]);
   }
 
+  onViewRestaurants() {
+    this.router.navigate(['restaurants/list']);
+  }
+
   onDelete(item: any) {
       Swal.fire({
         title: 'Are you sure?',
