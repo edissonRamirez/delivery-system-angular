@@ -2,15 +2,16 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ReportsService {
 
-  private baseUrl = 'http://localhost:3000';
+  private baseUrl = environment.url_reports; // Usa el puerto 3000 para json-server
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   /* ===============================
      PIE CHARTS

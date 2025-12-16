@@ -16,17 +16,16 @@ export class AuthInterceptor implements HttpInterceptor {
 
   constructor(private securityService: SecurityService,
     private router: Router) { }
-    
+
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
     let theUser = this.securityService.activeUserSession
     const token = theUser["token"];
     // Si la solicitud es para la ruta de "login", no adjuntes el token
-    if (request.url.includes('/login') || request.url.includes('/token-validation')) {
-      console.log("no se pone token")
+    // Excluir APIs externas (Groq, Google Gemini, etc.) del interceptor de autenticación
+    if (request.url.includes('api.groq.com') || request.url.includes('googleapis.com') || request.url.includes('/login') || request.url.includes('/token-validation')) {
       return next.handle(request);
     } else {
-      console.log("colocando token " + token)
-      // Adjunta el token a la solicitud
+      // Adjunta el token a la solicitud solo para el Backend
       const authRequest = request.clone({
         setHeaders: {
           Authorization: `Bearer ${token}`,
@@ -50,7 +49,6 @@ export class AuthInterceptor implements HttpInterceptor {
           }
 
           return new Observable<never>();
-
         }));
     }
     // Continúa con la solicitud modificada

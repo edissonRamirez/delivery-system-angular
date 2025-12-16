@@ -128,6 +128,46 @@ export const AdminLayoutRoutes: Routes = [
                         .then(m => m.RestaurantTypesModule)
             },
 
+            // 🚙 DRIVERS
+            {
+                path: 'drivers',
+                canActivate: [AuthenticationGuard],
+                children: [
+                    {
+                        path: 'list',
+                        loadComponent: () => import('src/app/pages/drivers/list-drivers/list-drivers.component').then(m => m.ListDriversComponent)
+                    },
+                    {
+                        path: 'create',
+                        loadComponent: () => import('src/app/pages/drivers/manage-driver/manage-driver.component').then(m => m.ManageDriverComponent)
+                    },
+                    {
+                        path: 'update/:id',
+                        loadComponent: () => import('src/app/pages/drivers/manage-driver/manage-driver.component').then(m => m.ManageDriverComponent)
+                    }
+                ]
+            },
+
+            // ⏱ SHIFTS
+            {
+                path: 'shifts',
+                canActivate: [AuthenticationGuard],
+                children: [
+                    {
+                        path: 'list',
+                        loadComponent: () => import('src/app/pages/shifts/list-shifts/list-shifts.component').then(m => m.ListShiftsComponent)
+                    },
+                    {
+                        path: 'create',
+                        loadComponent: () => import('src/app/pages/shifts/manage-shift/manage-shift.component').then(m => m.ManageShiftComponent)
+                    },
+                    {
+                        path: 'update/:id',
+                        loadComponent: () => import('src/app/pages/shifts/manage-shift/manage-shift.component').then(m => m.ManageShiftComponent)
+                    }
+                ]
+            },
+
             // ==============================================
             // 🧾 ORDERS — Standalone Components (sin módulo)
             // ==============================================

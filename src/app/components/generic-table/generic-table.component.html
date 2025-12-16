@@ -7,21 +7,16 @@
   <div class="d-flex align-items-center gap-2">
 
     <!-- Botón de crear enviado desde el componente padre -->
-    <ng-container *ngIf="headerActions"
-                  [ngTemplateOutlet]="headerActions">
+    <ng-container *ngIf="headerActions" [ngTemplateOutlet]="headerActions">
     </ng-container>
 
     <!-- TOGGLE -->
     <div class="btn-group ms-2">
-      <button class="btn btn-light"
-              [class.active]="viewMode === 'table'"
-              (click)="toggleView('table')">
+      <button class="btn btn-light" [class.active]="viewMode === 'table'" (click)="toggleView('table')">
         <i class="ni ni-align-left-2"></i>
       </button>
 
-      <button class="btn btn-light"
-              [class.active]="viewMode === 'cards'"
-              (click)="toggleView('cards')">
+      <button class="btn btn-light" [class.active]="viewMode === 'cards'" (click)="toggleView('cards')">
         <i class="ni ni-app"></i>
       </button>
     </div>
@@ -52,10 +47,17 @@
           <!-- Si NO es template -->
           <ng-container *ngIf="!col.template">
 
-            <!-- ⭐ FORMATO: CURRENCY -->
-            <ng-container *ngIf="col.format === 'currency'; else normalCell">
-              {{ item[col.field!] | currency:'COP':'symbol':'1.0-0' }}
+            <!-- ⭐ FORMATO: IMAGEN -->
+            <ng-container *ngIf="col.format === 'image'; else currencyCell">
+              <img [src]="item[col.field!]" alt="Image" class="img-thumbnail" style="max-height: 50px;">
             </ng-container>
+
+            <!-- ⭐ FORMATO: CURRENCY -->
+            <ng-template #currencyCell>
+              <ng-container *ngIf="col.format === 'currency'; else normalCell">
+                {{ item[col.field!] | currency:'COP':'symbol':'1.0-0' }}
+              </ng-container>
+            </ng-template>
 
             <!-- FORMATO NORMAL -->
             <ng-template #normalCell>
@@ -65,16 +67,14 @@
           </ng-container>
 
           <!-- Si es template -->
-          <ng-container *ngIf="col.template"
-                        [ngTemplateOutlet]="col.template"
-                        [ngTemplateOutletContext]="{ $implicit: item }">
+          <ng-container *ngIf="col.template" [ngTemplateOutlet]="col.template"
+            [ngTemplateOutletContext]="{ $implicit: item }">
           </ng-container>
 
         </td>
 
         <td *ngIf="actionsTemplate">
-          <ng-container [ngTemplateOutlet]="actionsTemplate"
-                        [ngTemplateOutletContext]="{ $implicit: item }">
+          <ng-container [ngTemplateOutlet]="actionsTemplate" [ngTemplateOutletContext]="{ $implicit: item }">
           </ng-container>
         </td>
 
@@ -109,10 +109,17 @@
 
             <small class="text-muted">{{ col.header }}</small><br>
 
-            <!-- ⭐ FORMATO CURRENCY -->
-            <ng-container *ngIf="col.format === 'currency'; else cardNormal">
-              <span>{{ item[col.field!] | currency:'COP':'symbol':'1.0-0' }}</span>
+            <!-- ⭐ FORMATO IMAGEN -->
+            <ng-container *ngIf="col.format === 'image'; else cardCurrency">
+              <img [src]="item[col.field!]" alt="Image" class="img-fluid rounded mb-2" style="max-height: 150px;">
             </ng-container>
+
+            <!-- ⭐ FORMATO CURRENCY -->
+            <ng-template #cardCurrency>
+              <ng-container *ngIf="col.format === 'currency'; else cardNormal">
+                <span>{{ item[col.field!] | currency:'COP':'symbol':'1.0-0' }}</span>
+              </ng-container>
+            </ng-template>
 
             <!-- TEXTO NORMAL -->
             <ng-template #cardNormal>
@@ -123,9 +130,7 @@
           </div>
 
           <!-- ⭐ TEMPLATE PERSONALIZADO -->
-          <div *ngIf="col.template"
-               [ngTemplateOutlet]="col.template"
-               [ngTemplateOutletContext]="{ $implicit: item }">
+          <div *ngIf="col.template" [ngTemplateOutlet]="col.template" [ngTemplateOutletContext]="{ $implicit: item }">
           </div>
 
         </div>
@@ -133,9 +138,7 @@
 
       <!-- ACCIONES -->
       <div class="text-right mt-auto" *ngIf="actionsTemplate">
-        <ng-container 
-          [ngTemplateOutlet]="actionsTemplate"
-          [ngTemplateOutletContext]="{ $implicit: item }">
+        <ng-container [ngTemplateOutlet]="actionsTemplate" [ngTemplateOutletContext]="{ $implicit: item }">
         </ng-container>
       </div>
 

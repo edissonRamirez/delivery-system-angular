@@ -1,0 +1,387 @@
+{
+    "systemContext": "Eres un asistente virtual de la Plataforma Web para Gestión de Domicilios en Moto. Este sistema facilita la interacción entre restaurantes, clientes, repartidores (conductores) y operadores logísticos. Las entidades principales son: pedidos (orders), clientes (customers), productos (products), restaurantes (restaurants), motocicletas (motorcycles), conductores (drivers), menús (menus), direcciones (addresses), turnos (shifts) e inconvenientes (issues). Puedes responder preguntas sobre el sistema y ejecutar acciones en la base de datos.",
+    "knowledge": {
+        "categories": [
+            {
+                "id": "system",
+                "name": "Sistema General",
+                "description": "Información general sobre la plataforma",
+                "questions": [
+                    {
+                        "keywords": [
+                            "para qué sirve",
+                            "sistema",
+                            "plataforma",
+                            "qué hace",
+                            "objetivo"
+                        ],
+                        "question": "¿Para qué sirve este sistema?",
+                        "answer": "Esta es una Plataforma Web para Gestión de Domicilios en Moto. Su objetivo es facilitar la interacción entre:\n\n🍽️ RESTAURANTES: Negocios que ofrecen productos alimenticios\n👥 CLIENTES: Usuarios finales que realizan pedidos\n🏍️ CONDUCTORES: Repartidores que entregan los pedidos en motocicleta\n📊 OPERADORES: Personal logístico que gestiona el sistema\n\nEl sistema permite gestionar pedidos de comida, asignar entregas a motociclistas, hacer seguimiento en tiempo real mediante mapas, y generar reportes visuales con gráficos."
+                    },
+                    {
+                        "keywords": [
+                            "funciona",
+                            "cómo funciona",
+                            "proceso",
+                            "flujo"
+                        ],
+                        "question": "¿Cómo funciona el sistema?",
+                        "answer": "El flujo del sistema es:\n\n1️⃣ Los RESTAURANTES registran sus productos en el sistema\n2️⃣ Los productos se asocian a restaurantes mediante MENÚS (relación muchos a muchos)\n3️⃣ Los CLIENTES seleccionan productos del menú y crean PEDIDOS\n4️⃣ Cada pedido se vincula a una DIRECCIÓN de entrega (relación uno a uno)\n5️⃣ El sistema asigna el pedido a una MOTOCICLETA disponible\n6️⃣ Un CONDUCTOR toma el turno con esa moto (mediante TURNOS)\n7️⃣ El conductor entrega el pedido en la dirección especificada\n8️⃣ Si hay problemas (accidentes, fallas), se registran como INCONVENIENTES con fotos\n\nTodo esto se visualiza en tiempo real mediante mapas y notificaciones."
+                    },
+                    {
+                        "keywords": [
+                            "entidades",
+                            "módulos",
+                            "secciones",
+                            "partes"
+                        ],
+                        "question": "¿Qué entidades maneja el sistema?",
+                        "answer": "El sistema maneja las siguientes entidades:\n\n📦 PEDIDOS: Órdenes de comida realizadas por clientes\n👤 CLIENTES: Usuarios que solicitan domicilios\n🍕 PRODUCTOS: Artículos de comida (hamburguesas, pizzas, bebidas, etc.)\n🍽️ RESTAURANTES: Negocios que ofrecen productos\n📋 MENÚS: Relación entre productos y restaurantes\n📍 DIRECCIONES: Lugares de entrega (uno por pedido)\n🏍️ MOTOCICLETAS: Vehículos para entregas\n👨‍🍳 CONDUCTORES: Repartidores que manejan las motos\n⏰ TURNOS: Asignación de conductores a motos (con fecha/hora)\n⚠️ INCONVENIENTES: Problemas con las motos (accidentes, fallas, etc.)\n📸 FOTOS: Evidencias de inconvenientes"
+                    },
+                    {
+                        "keywords": [
+                            "autenticación",
+                            "login",
+                            "oauth",
+                            "iniciar sesión",
+                            "google",
+                            "microsoft",
+                            "github"
+                        ],
+                        "question": "¿Cómo inicio sesión?",
+                        "answer": "El sistema utiliza OAuth para autenticación. Puedes iniciar sesión con:\n\n🔵 Google\n🔷 Microsoft\n⚫ GitHub\n\nAl autenticarte, el sistema obtiene tu token de acceso y foto de perfil, que se muestra en la interfaz. El token se envía automáticamente en todas las peticiones al backend para garantizar la seguridad."
+                    },
+                    {
+                        "keywords": [
+                            "mapa",
+                            "ubicación",
+                            "tiempo real",
+                            "tracking",
+                            "seguimiento"
+                        ],
+                        "question": "¿Cómo funciona el seguimiento en mapa?",
+                        "answer": "El sistema incluye un módulo de mapa interactivo que permite:\n\n📍 Visualizar en TIEMPO REAL la ubicación de las motocicletas\n🏍️ Ver qué motos están asignadas a cada pedido\n🗺️ Hacer seguimiento del estado de las entregas\n📊 Monitorear la distribución geográfica de los pedidos\n\nEsto ayuda a los operadores a coordinar mejor las entregas y a los clientes a saber dónde está su pedido."
+                    },
+                    {
+                        "keywords": [
+                            "notificaciones",
+                            "alertas",
+                            "sonido",
+                            "aviso"
+                        ],
+                        "question": "¿Cómo funcionan las notificaciones?",
+                        "answer": "Cuando se asigna un nuevo pedido a un motociclista, el sistema:\n\n🔔 Muestra una NOTIFICACIÓN VISUAL destacada\n🔊 Reproduce una ALERTA SONORA llamativa\n\nEsto garantiza que el conductor no pierda ningún pedido y pueda responder rápidamente a las nuevas asignaciones."
+                    },
+                    {
+                        "keywords": [
+                            "reportes",
+                            "gráficos",
+                            "estadísticas",
+                            "análisis"
+                        ],
+                        "question": "¿Qué reportes ofrece el sistema?",
+                        "answer": "El sistema incluye un módulo de análisis visual con:\n\n📊 3 GRÁFICOS CIRCULARES (pie charts)\n📈 3 GRÁFICOS DE BARRAS (bar charts)\n📉 3 GRÁFICOS DE SERIES TEMPORALES (line charts)\n\nEstos gráficos muestran estadísticas como:\n- Estado de pedidos (entregados, pendientes, cancelados)\n- Uso de motocicletas\n- Ventas por restaurante\n- Pedidos por día/semana/mes\n- Ingresos en el tiempo"
+                    }
+                ]
+            },
+            {
+                "id": "orders",
+                "name": "Pedidos",
+                "description": "Gestión de pedidos de comida",
+                "questions": [
+                    {
+                        "keywords": [
+                            "pedido",
+                            "qué es",
+                            "orden"
+                        ],
+                        "question": "¿Qué es un pedido?",
+                        "answer": "Un PEDIDO es una orden de comida realizada por un cliente. Contiene:\n\n- Productos del menú seleccionados\n- Cantidades de cada producto\n- Cliente que realiza el pedido\n- Dirección de entrega (relación uno a uno)\n- Motocicleta asignada para la entrega\n- Estado (pendiente, en proceso, entregado, cancelado)\n\nUn cliente puede realizar múltiples pedidos, y un producto puede estar en muchos pedidos diferentes."
+                    },
+                    {
+                        "keywords": [
+                            "crear",
+                            "pedido",
+                            "nuevo pedido",
+                            "hacer pedido",
+                            "dónde"
+                        ],
+                        "question": "¿Dónde puedo realizar un pedido?",
+                        "answer": "Puedes crear un pedido de dos formas:\n\n1️⃣ CON EL CHATBOT:\n'Crea un pedido para [nombre del cliente] de [producto] cantidad [número]'\n\n2️⃣ DESDE LA INTERFAZ:\n- Ve a la sección de 'Pedidos' en el menú principal\n- Haz clic en 'Nuevo Pedido'\n- Completa el formulario con:\n  • Datos del cliente\n  • Producto del menú\n  • Cantidad\n  • Dirección de entrega\n- Guarda el pedido"
+                    },
+                    {
+                        "keywords": [
+                            "estado",
+                            "pedido",
+                            "seguimiento",
+                            "rastrear",
+                            "tracking"
+                        ],
+                        "question": "¿Cómo hago seguimiento de un pedido?",
+                        "answer": "Puedes hacer seguimiento de varias formas:\n\n1️⃣ PREGUNTÁNDOME:\n'Busca el pedido [ID]' o 'Muéstrame el estado del pedido [ID]'\n\n2️⃣ EN LA INTERFAZ:\n- Ve a la sección de Pedidos\n- Busca por ID o filtra por estado\n- Usa el MAPA INTERACTIVO para ver la ubicación en tiempo real de la moto asignada\n\n3️⃣ ESTADOS POSIBLES:\n- Pendiente: Esperando asignación\n- En proceso: Conductor en camino\n- Entregado: Completado exitosamente\n- Cancelado: Pedido cancelado"
+                    },
+                    {
+                        "keywords": [
+                            "editar",
+                            "modificar",
+                            "actualizar",
+                            "pedido"
+                        ],
+                        "question": "¿Cómo edito un pedido?",
+                        "answer": "Para editar un pedido:\n\n1️⃣ CON EL CHATBOT:\n'Actualiza el pedido [ID] con cantidad [número]'\n'Edita el pedido [ID] con estado [nuevo estado]'\n\n2️⃣ DESDE LA INTERFAZ:\n- Busca el pedido en la sección de Pedidos\n- Haz clic en el botón 'Editar'\n- Modifica los campos necesarios\n- Guarda los cambios"
+                    },
+                    {
+                        "keywords": [
+                            "eliminar",
+                            "borrar",
+                            "cancelar",
+                            "pedido"
+                        ],
+                        "question": "¿Cómo elimino o cancelo un pedido?",
+                        "answer": "Para eliminar un pedido:\n\n1️⃣ CON EL CHATBOT:\n'Elimina el pedido [ID]' - Te pediré confirmación antes de eliminarlo\n\n2️⃣ DESDE LA INTERFAZ:\n- Busca el pedido\n- Haz clic en el botón de eliminar\n- Confirma la acción\n\n⚠️ IMPORTANTE: La eliminación es permanente y no se puede deshacer."
+                    }
+                ]
+            },
+            {
+                "id": "customers",
+                "name": "Clientes",
+                "description": "Gestión de clientes del sistema",
+                "questions": [
+                    {
+                        "keywords": [
+                            "cliente",
+                            "qué es",
+                            "usuario"
+                        ],
+                        "question": "¿Qué es un cliente?",
+                        "answer": "Un CLIENTE es un usuario final del sistema que:\n\n- Accede a los menús de restaurantes\n- Selecciona productos para crear pedidos\n- Puede realizar múltiples pedidos\n- Tiene información de contacto (nombre, email, teléfono)\n\nLos clientes son la base del sistema, ya que generan la demanda de domicilios."
+                    },
+                    {
+                        "keywords": [
+                            "crear",
+                            "cliente",
+                            "registrar",
+                            "nuevo",
+                            "dónde"
+                        ],
+                        "question": "¿Dónde puedo registrar un nuevo cliente?",
+                        "answer": "Para registrar un cliente:\n\n1️⃣ CON EL CHATBOT:\n'Crea un cliente llamado [nombre] con email [email] y teléfono [teléfono]'\n\n2️⃣ DESDE LA INTERFAZ:\n- Ve a la sección de 'Clientes' en el menú\n- Haz clic en 'Nuevo Cliente'\n- Completa el formulario con:\n  • Nombre completo\n  • Email\n  • Teléfono\n- Guarda el registro"
+                    },
+                    {
+                        "keywords": [
+                            "buscar",
+                            "cliente",
+                            "encontrar",
+                            "listar"
+                        ],
+                        "question": "¿Cómo busco un cliente?",
+                        "answer": "Puedes buscar clientes de varias formas:\n\n1️⃣ PREGUNTÁNDOME:\n'Busca el cliente [ID]'\n'Muéstrame todos los clientes'\n\n2️⃣ EN LA INTERFAZ:\n- Ve a la sección de Clientes\n- Usa el buscador por nombre o ID\n- Aplica filtros si están disponibles"
+                    }
+                ]
+            },
+            {
+                "id": "products_restaurants",
+                "name": "Productos y Restaurantes",
+                "description": "Gestión de productos, restaurantes y menús",
+                "questions": [
+                    {
+                        "keywords": [
+                            "producto",
+                            "qué es",
+                            "artículo"
+                        ],
+                        "question": "¿Qué son los productos?",
+                        "answer": "Los PRODUCTOS son artículos de comida que se ofrecen para delivery:\n\n🍔 Hamburguesas\n🍕 Pizzas\n🥤 Bebidas\n🍟 Acompañamientos\n🍰 Postres\n\nCada producto tiene nombre, precio y descripción. Los productos se relacionan con restaurantes a través de MENÚS (relación muchos a muchos), lo que permite que:\n- Un producto esté en varios restaurantes\n- Un restaurante ofrezca múltiples productos"
+                    },
+                    {
+                        "keywords": [
+                            "restaurante",
+                            "qué es",
+                            "negocio"
+                        ],
+                        "question": "¿Qué son los restaurantes?",
+                        "answer": "Los RESTAURANTES son establecimientos que ofrecen productos para delivery:\n\n- Tienen nombre, dirección y tipo de comida\n- Pueden ofrecer múltiples productos\n- Se relacionan con productos mediante MENÚS\n- Cada restaurante personaliza su oferta\n\nEjemplos: pizzerías, hamburgueserías, restaurantes de comida rápida, etc."
+                    },
+                    {
+                        "keywords": [
+                            "menú",
+                            "qué es",
+                            "relación",
+                            "productos restaurantes"
+                        ],
+                        "question": "¿Qué es el menú?",
+                        "answer": "El MENÚ es una entidad intermedia que relaciona productos con restaurantes:\n\n📋 FUNCIÓN:\n- Permite que un mismo producto esté en varios restaurantes\n- Permite que un restaurante ofrezca múltiples productos\n- Facilita la personalización de la oferta por restaurante\n\n🔗 RELACIÓN MUCHOS A MUCHOS:\nProductos ↔️ Menús ↔️ Restaurantes\n\nEsto da flexibilidad para que diferentes restaurantes ofrezcan los mismos productos (ej: Coca-Cola en varias pizzerías)."
+                    },
+                    {
+                        "keywords": [
+                            "crear",
+                            "producto",
+                            "agregar",
+                            "nuevo"
+                        ],
+                        "question": "¿Cómo agrego un producto?",
+                        "answer": "Para agregar un producto debes proporcionar todos los datos:\n\n1️⃣ CON EL CHATBOT:\n'Crea un producto llamado [nombre] con descripción [descripción] precio [precio] categoría [categoría]'\n\nEJEMPLOS:\n• 'Crea un producto llamado Pizza Margarita con descripción Deliciosa pizza con tomate y queso precio 15000 categoría Pizzas'\n• 'Crea un producto llamado Hamburguesa Clásica con descripción Carne, lechuga, tomate precio 12000 categoría Hamburguesas'\n\n2️⃣ DESDE LA INTERFAZ:\n- Ve a la sección de 'Productos'\n- Haz clic en 'Nuevo Producto'\n- Completa:\n  • Nombre\n  • Descripción\n  • Precio\n  • Categoría\n- Guarda el producto"
+                    },
+                    {
+                        "keywords": [
+                            "crear",
+                            "restaurante",
+                            "registrar",
+                            "nuevo"
+                        ],
+                        "question": "¿Cómo registro un restaurante?",
+                        "answer": "Para registrar un restaurante:\n\n1️⃣ CON EL CHATBOT:\n'Crea un restaurante llamado [nombre]'\n\n2️⃣ DESDE LA INTERFAZ:\n- Ve a la sección de 'Restaurantes'\n- Haz clic en 'Nuevo Restaurante'\n- Completa nombre, dirección, tipo de comida\n- Guarda el registro"
+                    }
+                ]
+            },
+            {
+                "id": "motorcycles_drivers",
+                "name": "Motocicletas y Conductores",
+                "description": "Gestión de vehículos, conductores y turnos",
+                "questions": [
+                    {
+                        "keywords": [
+                            "motocicleta",
+                            "moto",
+                            "vehículo",
+                            "qué es"
+                        ],
+                        "question": "¿Qué son las motocicletas?",
+                        "answer": "Las MOTOCICLETAS son vehículos registrados para realizar entregas:\n\n🏍️ CARACTERÍSTICAS:\n- Tienen placa única\n- Modelo y especificaciones\n- Pueden transportar múltiples pedidos al día\n- Se asignan a conductores mediante TURNOS\n\n⚠️ INCONVENIENTES:\nSi una moto tiene problemas (accidentes, fallas mecánicas, pinchazos), se registran como INCONVENIENTES con fotografías como evidencia."
+                    },
+                    {
+                        "keywords": [
+                            "conductor",
+                            "repartidor",
+                            "driver",
+                            "qué es"
+                        ],
+                        "question": "¿Qué son los conductores?",
+                        "answer": "Los CONDUCTORES (o repartidores) son las personas que entregan los pedidos:\n\n👨‍🍳 CARACTERÍSTICAS:\n- Pueden rotar entre diferentes motocicletas\n- Una moto puede ser usada por varios conductores\n- Se asignan mediante TURNOS (relación muchos a muchos)\n\n⏰ TURNOS:\nRegistran qué conductor usa qué moto, con fecha y hora de inicio y fin. Esto permite identificar:\n- Qué conductor está disponible\n- Qué moto tiene asignada en cada momento"
+                    },
+                    {
+                        "keywords": [
+                            "turno",
+                            "qué es",
+                            "asignación",
+                            "shift"
+                        ],
+                        "question": "¿Qué son los turnos?",
+                        "answer": "Los TURNOS son asignaciones de conductores a motocicletas:\n\n⏰ INFORMACIÓN QUE REGISTRAN:\n- Conductor asignado\n- Motocicleta asignada\n- Fecha y hora de inicio\n- Fecha y hora de finalización\n\n🔄 RELACIÓN MUCHOS A MUCHOS:\nConductores ↔️ Turnos ↔️ Motocicletas\n\nEsto permite flexibilidad para que conductores roten entre motos y viceversa."
+                    },
+                    {
+                        "keywords": [
+                            "inconveniente",
+                            "problema",
+                            "accidente",
+                            "falla",
+                            "issue"
+                        ],
+                        "question": "¿Qué son los inconvenientes?",
+                        "answer": "Los INCONVENIENTES son problemas que ocurren con las motocicletas:\n\n⚠️ TIPOS DE INCONVENIENTES:\n- Accidentes\n- Fallas mecánicas\n- Pinchazos\n- Otros problemas técnicos\n\n📸 EVIDENCIA:\nCada inconveniente puede tener FOTOGRAFÍAS asociadas que sirven como evidencia. Estas fotos están vinculadas exclusivamente a un único inconveniente.\n\nEsto ayuda a llevar un registro de mantenimiento y problemas de cada vehículo."
+                    },
+                    {
+                        "keywords": [
+                            "crear",
+                            "motocicleta",
+                            "registrar",
+                            "nueva",
+                            "dónde"
+                        ],
+                        "question": "¿Dónde puedo registrar una motocicleta?",
+                        "answer": "Para registrar una motocicleta:\n\n1️⃣ CON EL CHATBOT:\n'Crea una motocicleta con placa [placa]'\n\n2️⃣ DESDE LA INTERFAZ:\n- Ve a la sección de 'Motocicletas'\n- Haz clic en 'Nueva Motocicleta'\n- Completa placa, modelo, especificaciones\n- Guarda el registro"
+                    },
+                    {
+                        "keywords": [
+                            "crear",
+                            "conductor",
+                            "registrar",
+                            "nuevo",
+                            "repartidor",
+                            "dónde"
+                        ],
+                        "question": "¿Dónde puedo registrar un nuevo conductor?",
+                        "answer": "Para registrar un conductor:\n\n📍 UBICACIÓN EN LA INTERFAZ:\n- Ve a la sección de 'Conductores' o 'Drivers' en el menú principal\n- Haz clic en 'Nuevo Conductor'\n- Completa el formulario con:\n  • Nombre completo\n  • Documento de identidad\n  • Licencia de conducción\n  • Teléfono de contacto\n- Guarda el registro\n\n💡 NOTA: Después de registrar un conductor, puedes asignarlo a una moto mediante TURNOS."
+                    }
+                ]
+            },
+            {
+                "id": "addresses",
+                "name": "Direcciones",
+                "description": "Gestión de direcciones de entrega",
+                "questions": [
+                    {
+                        "keywords": [
+                            "dirección",
+                            "address",
+                            "entrega",
+                            "qué es"
+                        ],
+                        "question": "¿Qué son las direcciones?",
+                        "answer": "Las DIRECCIONES son los lugares exactos donde se entregan los pedidos:\n\n📍 CARACTERÍSTICAS:\n- Cada dirección pertenece a UN SOLO pedido (relación uno a uno)\n- Contiene información detallada: calle, número, barrio, ciudad, etc.\n- Se usa para el seguimiento en el mapa\n- Es esencial para que el conductor llegue al destino correcto\n\n🗺️ IMPORTANCIA:\nLa dirección es crucial para el sistema de tracking en tiempo real y para garantizar entregas exitosas."
+                    }
+                ]
+            },
+            {
+                "id": "chatbot",
+                "name": "Chatbot",
+                "description": "Información sobre el asistente virtual",
+                "questions": [
+                    {
+                        "keywords": [
+                            "ayuda",
+                            "comandos",
+                            "qué puedes hacer",
+                            "funciones"
+                        ],
+                        "question": "¿Qué puedes hacer?",
+                        "answer": "Puedo ayudarte con:\n\n📋 CONSULTAS:\n- Responder preguntas sobre el sistema\n- Explicar cómo funcionan las entidades\n- Guiarte en el uso de la plataforma\n\n⚡ ACCIONES (CRUD):\n✅ CREAR: pedidos, clientes, productos, restaurantes, motocicletas\n🔍 BUSCAR: cualquier entidad por ID\n📋 LISTAR: ver todas las entidades de un tipo\n✏️ ACTUALIZAR: modificar datos existentes\n❌ ELIMINAR: borrar registros (con confirmación)\n\n💬 EJEMPLOS:\n- 'Crea un pedido para Juan de Pizza cantidad 2'\n- 'Busca el cliente 5'\n- 'Muéstrame todos los productos'\n- 'Actualiza el pedido 10 con estado entregado'\n- 'Elimina el restaurante 3'\n- '¿Cómo registro un conductor?'\n- '¿Para qué sirve este sistema?'"
+                    }
+                ]
+            }
+        ]
+    },
+    "examples": [
+        {
+            "userMessage": "Crea un pedido para María de Hamburguesa cantidad 3",
+            "intent": "create",
+            "entity": "order",
+            "params": {
+                "customer_name": "María",
+                "product_name": "Hamburguesa",
+                "quantity": 3
+            }
+        },
+        {
+            "userMessage": "Busca el cliente 5",
+            "intent": "search",
+            "entity": "customer",
+            "params": {
+                "id": 5
+            }
+        },
+        {
+            "userMessage": "Muéstrame todos los productos",
+            "intent": "list",
+            "entity": "product",
+            "params": {}
+        },
+        {
+            "userMessage": "Actualiza el pedido 10 con cantidad 5",
+            "intent": "update",
+            "entity": "order",
+            "params": {
+                "id": 10,
+                "quantity": 5
+            }
+        },
+        {
+            "userMessage": "Elimina el restaurante 3",
+            "intent": "delete",
+            "entity": "restaurant",
+            "params": {
+                "id": 3
+            }
+        }
+    ]
+}

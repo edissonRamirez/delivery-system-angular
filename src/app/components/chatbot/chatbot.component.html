@@ -1,0 +1,66 @@
+<div class="chatbot-container">
+  <!-- Botón Flotante -->
+  <button class="chatbot-toggle" [class.open]="isOpen" (click)="toggleChat()">
+    <i class="ni ni-chat-round"></i>
+  </button>
+
+  <!-- Ventana del Chat -->
+  <div class="chatbot-window" [class.open]="isOpen">
+    <!-- Header -->
+    <div class="chatbot-header">
+      <div class="header-content">
+        <div class="avatar">
+          <i class="ni ni-chat-round"></i>
+        </div>
+        <div class="header-text">
+          <h3>Asistente IA</h3>
+          <p>Powered by Llama 3</p>
+        </div>
+      </div>
+      <button class="close-btn" (click)="toggleChat()" aria-label="Cerrar chat">
+        <i class="ni ni-fat-remove"></i>
+      </button>
+    </div>
+
+    <!-- Cuerpo de Mensajes -->
+    <div class="chatbot-messages" #messagesContainer>
+      <div *ngFor="let msg of messages" [class]="getMessageClass(msg)">
+        <div class="message-content">
+          <p class="message-text" [innerHTML]="formatMessageText(msg.text)"></p>
+
+          <!-- Botones de Confirmación dentro del mensaje -->
+          <div *ngIf="msg.data?.hasConfirmation" class="confirmation-buttons">
+            <button class="btn-confirm" (click)="confirmAction()">
+              <i class="ni ni-check-bold"></i> Confirmar
+            </button>
+            <button class="btn-cancel" (click)="cancelAction()">
+              <i class="ni ni-fat-remove"></i> Cancelar
+            </button>
+          </div>
+        </div>
+        <span class="message-time">{{ msg.timestamp | date:'shortTime' }}</span>
+      </div>
+
+      <!-- Indicador de Escritura -->
+      <div *ngIf="isLoading" class="message bot">
+        <div class="message-content">
+          <div class="typing-indicator">
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Input Footer -->
+    <div class="chatbot-input">
+      <input type="text" [(ngModel)]="userInput" (keypress)="onKeyPress($event)"
+        placeholder="Escribe aquí tu consulta..." [disabled]="isLoading">
+
+      <button class="send-btn" (click)="sendMessage()" [disabled]="!userInput.trim() || isLoading">
+        <i class="ni ni-send"></i>
+      </button>
+    </div>
+  </div>
+</div>

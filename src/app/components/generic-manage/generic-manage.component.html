@@ -38,57 +38,34 @@
                 <label class="form-control-label">{{ f.label }}</label>
 
                 <!-- TEXT / EMAIL / NUMBER -->
-                <input 
-                  *ngIf="['text','email','number','password','date'].includes(f.type)"
-                  class="form-control"
-                  [type]="f.type"
-                  [formControlName]="f.name"
-                  [placeholder]="f.placeholder"
-                  [disabled]="f.disabled"
-                  [ngClass]="{'is-invalid': submitted && form.get(f.name)?.invalid}"
-                />
+                <input *ngIf="['text','email','number','password','date','datetime-local','time'].includes(f.type)"
+                  class="form-control" [type]="f.type" [formControlName]="f.name" [placeholder]="f.placeholder"
+                  [disabled]="f.disabled" [ngClass]="{'is-invalid': submitted && form.get(f.name)?.invalid}" />
 
                 <!-- TEXTAREA -->
-                <textarea 
-                  *ngIf="f.type === 'textarea'"
-                  class="form-control"
-                  [formControlName]="f.name"
-                  rows="3">
+                <textarea *ngIf="f.type === 'textarea'" class="form-control" [formControlName]="f.name" rows="3">
                 </textarea>
 
                 <!-- CURRENCY -->
-                <input 
-                  *ngIf="f.type === 'currency'"
-                  class="form-control"
-                  type="text"
+                <input *ngIf="f.type === 'currency'" class="form-control" type="text"
                   [value]="form.get(f.name)?.value | currency:'COP':'symbol-narrow':'1.0-0'"
                   (input)="onCurrencyInput($event, f.name)"
-                  [ngClass]="{'is-invalid': submitted && form.get(f.name)?.invalid}"
-                />
+                  [ngClass]="{'is-invalid': submitted && form.get(f.name)?.invalid}" />
 
                 <!-- SELECT -->
-                <select 
-                  *ngIf="f.type === 'select'" 
-                  class="form-control"
-                  [formControlName]="f.name"
+                <select *ngIf="f.type === 'select'" class="form-control" [formControlName]="f.name"
                   [ngClass]="{'is-invalid': submitted && form.get(f.name)?.invalid}">
-                  
+
                   <option value="">Seleccione...</option>
 
-                  <option 
-                    *ngFor="let op of f.options"
-                    [value]="f.optionValue ? op[f.optionValue] : op">
+                  <option *ngFor="let op of f.options" [value]="f.optionValue ? op[f.optionValue] : op">
                     {{ f.optionLabel ? op[f.optionLabel] : op }}
                   </option>
                 </select>
 
                 <!-- FILE INPUT -->
-                <input 
-                  *ngIf="f.type === 'file'" 
-                  type="file" 
-                  class="form-control"
-                  (change)="onFileSelected($event, f.name)"
-                />
+                <input *ngIf="f.type === 'file'" type="file" class="form-control"
+                  (change)="onFileSelected($event, f.name)" />
 
                 <!-- ERROR MENSAJE -->
                 <div class="invalid-feedback" *ngIf="submitted && form.get(f.name)?.invalid">

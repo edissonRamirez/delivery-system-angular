@@ -17,7 +17,7 @@ export class PhotoService {
     })
   };
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   /** =====================================================
    * GET ALL PHOTOS
@@ -38,9 +38,12 @@ export class PhotoService {
   /** =====================================================
    * CREATE PHOTO
    * POST /photos
-   * Body: { name, address, phone, email }
+   * Body: { name, address, phone, email } or FormData
    ====================================================== */
-  create(photo: Photo): Observable<Photo> {
+  create(photo: Photo | FormData): Observable<Photo> {
+    if (photo instanceof FormData) {
+      return this.http.post<Photo>(`${this.API_URL}/upload`, photo);
+    }
     return this.http.post<Photo>(`${this.API_URL}`, photo, this.httpOptions);
   }
 
@@ -48,7 +51,12 @@ export class PhotoService {
    * UPDATE PHOTO
    * PUT /photos/:id
    ====================================================== */
-  update(id: number, photo: Photo): Observable<Photo> {
+  update(id: number, photo: Photo | FormData): Observable<Photo> {
+    if (photo instanceof FormData) {
+      // For PUT with FormData, depending on backend, it might be better to use POST with _method or similar,
+      // but assuming standard PUT multipart support.
+      return this.http.put<Photo>(`${this.API_URL}/${id}`, photo);
+    }
     return this.http.put<Photo>(`${this.API_URL}/${id}`, photo, this.httpOptions);
   }
 

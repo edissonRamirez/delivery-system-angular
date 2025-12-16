@@ -16,6 +16,7 @@ export class ProductListComponent implements OnInit {
   singular = 'Product';
 
   columns = [
+    { header: 'ID', field: 'id' },
     { header: 'Product Name', field: 'name' },
     { header: 'Description', field: 'description' },
     { header: 'Category', field: 'category' },
