@@ -1,0 +1,50 @@
+<div class="header bg-gradient-primary pb-8 pt-5 pt-md-8"></div>
+
+<div class="container mt--7">
+  <div class="row justify-content-center">
+    <div class="col-lg-6">
+
+      <div class="card shadow p-4">
+
+        <h3 class="mb-4">Asignar moto al pedido #{{ orderId }}</h3>
+
+        <!-- CAMPOS DESHABILITADOS -->
+        <div class="mb-3">
+          <label class="form-label">Cliente</label>
+          <input class="form-control" [value]="order.customer_name" disabled>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">Producto</label>
+          <input class="form-control" [value]="order.product_name" disabled>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">Total</label>
+          <input class="form-control"
+                 [value]="order.total_price | currency:'COP':'symbol':'1.0-0'"
+                 disabled>
+        </div>
+
+        <!-- SELECT DE MOTOS -->
+        <div class="mb-3">
+          <label class="form-label">Seleccione una moto</label>
+          <select class="form-control" [(ngModel)]="order.motorcycle_id">
+            <option value="">Seleccione...</option>
+            <option *ngFor="let m of motorcycles" [value]="m.id">
+              {{ m.license_plate }} — {{ m.brand }} {{ m.model }}
+            </option>
+          </select>
+        </div>
+
+        <!-- BOTONES -->
+        <div class="d-flex justify-content-end gap-3">
+          <button class="btn btn-secondary" (click)="cancel()">Cancelar</button>
+          <button class="btn btn-primary" (click)="save()">Asignar moto</button>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+</div>

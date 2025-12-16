@@ -5,37 +5,45 @@ import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 
 import { AppComponent } from './app.component';
+import { environment } from '../environments/environment';
 import { AdminLayoutComponent } from './layouts/admin-layout/admin-layout.component';
 import { AuthLayoutComponent } from './layouts/auth-layout/auth-layout.component';
 
+import { AngularFireModule } from '@angular/fire/compat';
+import { AngularFireAuthModule } from '@angular/fire/compat/auth';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { BrowserModule } from '@angular/platform-browser';
+
+// AngularFire imports
+import { provideFirebaseApp, initializeApp } from '@angular/fire/app';
+import { provideAuth, getAuth } from '@angular/fire/auth';
 
 import { AppRoutingModule } from './app.routing';
 import { ComponentsModule } from './components/components.module';
 import { AuthInterceptor } from './interceptors/auth.interceptor';
 import { WebSocketService } from './services/web-socket-service.service';
 import { TrackingComponent } from './pages/tracking/tracking.component';
-import { MotorcycleListComponent } from './pages/motorcycles/motorcycles-list/motorcycles-list.component';
-import { MotorcyclesManageComponent } from './pages/motorcycles/motorcycles-manage/motorcycles-manage.component';
-import { AddRestaurantTypesComponent } from 'src/app/pages/restaurant-types/add-restaurant-types/add-restaurant-types.component'
+import { ReportsDashboardComponent } from './pages/reports/reports-dashboard/reports-dashboard.component';
 
 
 
 @NgModule({
   imports: [
     BrowserAnimationsModule,
+    provideFirebaseApp(() => initializeApp(environment.firebase)),
+    provideAuth(() => getAuth()),
     FormsModule,
     HttpClientModule,
     ComponentsModule,
     NgbModule,
     RouterModule,
-    AppRoutingModule
+    AppRoutingModule,
+    ReportsDashboardComponent
   ],
   declarations: [
     AppComponent,
     AdminLayoutComponent,
     AuthLayoutComponent,
-    TrackingComponent
   ],
   providers: [
     WebSocketService,

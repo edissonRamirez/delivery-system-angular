@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ViewMenuComponent } from './menus-view.component';
+import { OrdersViewComponent } from './orders-view.component';
 
-describe('ViewMenuComponent', () => {
-  let component: ViewMenuComponent;
-  let fixture: ComponentFixture<ViewMenuComponent>;
+describe('OrdersViewComponent', () => {
+  let component: OrdersViewComponent;
+  let fixture: ComponentFixture<OrdersViewComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ViewMenuComponent ]
+      declarations: [ OrdersViewComponent ]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(ViewMenuComponent);
+    fixture = TestBed.createComponent(OrdersViewComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

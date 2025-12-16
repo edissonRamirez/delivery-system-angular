@@ -6,7 +6,7 @@
 
       <div class="card shadow">
 
-        <!-- HEADER DE LA SECCIÓN -->
+        <!-- ENCABEZADO -->
         <div class="card-header border-0 d-flex justify-content-between align-items-center">
           <h3 class="mb-0">Menú — {{ restaurantName }}</h3>
 
@@ -15,49 +15,63 @@
           </button>
         </div>
 
-        <!-- BODY -->
+        <!-- CUERPO -->
         <div class="card-body">
 
-          <div class="row">
+          <!-- LOADING -->
+          <div *ngIf="loading" class="text-center py-5">
+            <div class="spinner-border text-primary"></div>
+            <p class="mt-3">Cargando menú...</p>
+          </div>
 
-            <div class="col-md-6 col-lg-4 mb-4" *ngFor="let item of menuItems">
+          <!-- SIN ITEMS -->
+          <div *ngIf="!loading && menuItems.length === 0" class="text-center py-5">
+            <h4 class="text-muted">No hay productos en este menú.</h4>
+          </div>
 
-              <div class="menu-card">
-                <div class="card-body">
+          <!-- LISTADO DE ITEMS -->
+          <div class="row" *ngIf="!loading && menuItems.length > 0">
 
-                  <h4 class="font-weight-bold">{{ item.product_name }}</h4>
-                  <p class="text-muted">{{ item.product?.category }}</p>
-                  <hr />
+            <div class="col-md-6 col-lg-4 mb-4"
+                 *ngFor="let item of menuItems">
 
-                  <p class="mb-2 price">
-                    <strong>Precio:</strong>
-                    <span class="price-value">
-                      {{ item.price | currency:'COP':'symbol':'1.0-0':'es-CO' }}
-                    </span>
-                  </p>
+              <div class="menu-card shadow-sm rounded p-3 bg-white">
 
-                  <!-- Disponibilidad -->
-                  <div class="mt-3">
-                    <span class="badge px-3 py-2 text-white"
-                      [ngClass]="item.availability ? 'badge-success' : 'badge-danger'">
-                      {{ item.availability ? 'DISPONIBLE' : 'AGOTADO' }}
-                    </span>
-                  </div>
+                <h4 class="font-weight-bold">{{ item.product_name }}</h4>
+                <p class="text-muted">{{ item.product?.category }}</p>
 
-                  <!-- BOTONES -->
-                  <div class="mt-4 d-flex gap-2">
-                    <button class="btn btn-sm btn-primary me-2" (click)="onEdit(item)">
-                      Editar
-                    </button>
+                <hr />
 
-                    <button class="btn btn-sm btn-danger" (click)="onDelete(item)">
-                      Eliminar
-                    </button>
-                  </div>
+                <!-- PRECIO -->
+                <p class="mb-2">
+                  <strong>Precio:</strong>
+                </p>
+                <p class="price-value h5">
+                    {{ (item.product_price || item.price) ? ((item.product_price || item.price) | currency:'COP':'symbol':'1.0-0') : '$
+                    —' }}
+                </p>
 
+
+                <!-- DISPONIBILIDAD -->
+                <div class="mt-3">
+                  <span class="badge px-3 py-2 text-white"
+                        [ngClass]="item.availability ? 'badge-success' : 'badge-danger'">
+                    {{ item.availability ? 'DISPONIBLE' : 'AGOTADO' }}
+                  </span>
                 </div>
-              </div>
 
+                <!-- BOTONES -->
+                <div class="mt-4 d-flex gap-2">
+                  <button class="btn btn-sm btn-primary me-2" (click)="onEdit(item)">
+                    Editar
+                  </button>
+
+                  <button class="btn btn-sm btn-danger" (click)="onDelete(item)">
+                    Eliminar
+                  </button>
+                </div>
+
+              </div>
             </div>
 
           </div>

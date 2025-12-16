@@ -43,6 +43,11 @@ export class CustomersListComponent implements OnInit {
 
   onDelete(item: Customer) {
     console.log("Eliminar cliente", item);
-    // Opcional: SweetAlert2
   }
+
+  // ⭐⭐⭐ NUEVO: Navegar a vista de órdenes del cliente
+  onViewOrders(item: Customer) {
+    this.router.navigate(['/orders/view', item.id]);
+  }
+
 }

@@ -3,13 +3,17 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { MenuService } from 'src/app/services/menu.service';
 import Swal from 'sweetalert2';
+import { LOCALE_ID } from '@angular/core';
 
 @Component({
   selector: 'app-view-menu',
   standalone: true,
   imports: [CommonModule],
   templateUrl: './menus-view.component.html',
-  styleUrls: ['./menus-view.component.scss']
+  styleUrls: ['./menus-view.component.scss'],
+  providers: [
+    { provide: LOCALE_ID, useValue: 'es-CO' }  // ⭐ NECESARIO PARA FORMATO COP
+  ]
 })
 export class ViewMenuComponent implements OnInit {
 
@@ -17,6 +21,8 @@ export class ViewMenuComponent implements OnInit {
   restaurantName: string = '';
   menuItems: any[] = [];
   loading: boolean = true;
+  viewMode: 'cards' | 'table' = 'cards';
+
 
   constructor(
     private route: ActivatedRoute,
@@ -33,6 +39,8 @@ export class ViewMenuComponent implements OnInit {
     this.menuService.getAll().subscribe({
       next: res => {
         this.menuItems = res.filter((m: any) => m.restaurant_id === this.restaurantId);
+
+        console.log(this.menuItems);
 
         if (this.menuItems.length > 0) {
           this.restaurantName = this.menuItems[0].restaurant?.name ?? 'Menú';
@@ -52,21 +60,21 @@ export class ViewMenuComponent implements OnInit {
   }
 
   onDelete(item: any) {
-      Swal.fire({
-        title: '¿Seguro que deseas eliminar?',
-        text: 'Esta acción no se puede deshacer.',
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonText: 'Sí, eliminar',
-        cancelButtonText: 'Cancelar'
-      }).then(result => {
-        if (result.isConfirmed) {
-          this.menuService.delete(item.id).subscribe(() => {
-            this.loadMenu();
-          });
-        }
-      });
-    }
+    Swal.fire({
+      title: '¿Seguro que deseas eliminar?',
+      text: 'Esta acción no se puede deshacer.',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Sí, eliminar',
+      cancelButtonText: 'Cancelar'
+    }).then(result => {
+      if (result.isConfirmed) {
+        this.menuService.delete(item.id).subscribe(() => {
+          this.loadMenu();
+        });
+      }
+    });
+  }
 
   onBack() {
     this.router.navigate(['/restaurants/list']);

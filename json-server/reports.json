@@ -1,0 +1,46 @@
+{
+  "pieReports": {
+    "orderStatus": {
+      "labels": ["Entregados", "Pendientes", "Cancelados"],
+      "values": [52, 30, 18]
+    },
+    "motoUsage": {
+      "labels": ["Moto 1", "Moto 2", "Moto 3"],
+      "values": [70, 25, 5]
+    },
+    "dayNightSales": {
+      "labels": ["Día", "Noche"],
+      "values": [70, 30]
+    }
+  },
+
+  "barReports": {
+    "monthlyOrders": {
+      "labels": ["Enero", "Febrero", "Marzo", "Abril"],
+      "values": [120, 150, 180, 200]
+    },
+    "restaurantSales": {
+      "labels": ["Burger Station", "Pizza Planet", "Go Salad"],
+      "values": [900000, 750000, 300000]
+    },
+    "motoDeliveries": {
+      "labels": ["Moto 1", "Moto 2", "Moto 3"],
+      "values": [70, 55, 40]
+    }
+  },
+
+  "lineReports": {
+    "dailyOrders": {
+      "labels": ["Lun", "Mar", "Mié", "Jue", "Vie"],
+      "values": [50, 70, 65, 80, 95]
+    },
+    "weeklyRevenue": {
+      "labels": ["Semana 1", "Semana 2", "Semana 3", "Semana 4"],
+      "values": [400000, 520000, 480000, 600000]
+    },
+    "hourlyOrders": {
+      "labels": ["10:00", "12:00", "14:00", "16:00", "18:00"],
+      "values": [10, 15, 30, 25, 20]
+    }
+  }
+}

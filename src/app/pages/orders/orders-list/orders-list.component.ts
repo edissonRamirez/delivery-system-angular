@@ -20,8 +20,11 @@ export class OrdersListComponent implements OnInit {
     { header: 'Cliente', field: 'customer_name' },
     { header: 'Restaurante', field: 'restaurant_name' },
     { header: 'Producto', field: 'product_name' },
-    { header: 'Precio Total', field: 'total_price' },
-    { header: 'Estado', field: 'status' }
+    { header: 'Precio Total', field: 'total_price', format: 'currency' },
+    { header: 'Estado', field: 'status' },
+    { header: 'Dirección', field: 'address_street' },
+    { header: 'Ciudad', field: 'address_city' },
+    { header: 'Motocicleta (Placa)', field: 'motorcycle_plate' }
   ];
 
   orders: any[] = [];
@@ -35,13 +38,15 @@ export class OrdersListComponent implements OnInit {
     this.service.getAll().subscribe(res => {
       this.orders = res.map(o => ({
         ...o,
-        // construir lista de productos para la vista de cards
         products: [
           {
             name: o.product_name,
             price: o.product_price
           }
-        ]
+        ],
+        address_street: o.address_street,
+        address_city: o.address_city,
+        motorcycle_plate: o.motorcycle_plate
       }));
     });
   }
@@ -52,6 +57,14 @@ export class OrdersListComponent implements OnInit {
 
   onEdit(item: any) {
     this.router.navigate(['orders/update', item.id]);
+  }
+
+  onTraking() {
+    this.router.navigate(['/tracking']);
+  }
+
+  onAssignMoto(item: any) {
+    this.router.navigate(['orders/assign', item.id]);
   }
 
   onDelete(item: any) {

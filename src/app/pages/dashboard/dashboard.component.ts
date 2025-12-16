@@ -1,60 +1,88 @@
 import { Component, OnInit } from '@angular/core';
-import Chart from 'chart.js';
-
-// core components
-import {
-  chartOptions,
-  parseOptions,
-  chartExample1,
-  chartExample2
-} from "../../variables/charts";
+import { NgChartsModule } from 'ng2-charts';
+import { ReportsService } from 'src/app/services/report.service';
 
 @Component({
   selector: 'app-dashboard',
+  standalone: true,
+  imports: [NgChartsModule],
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.scss']
 })
 export class DashboardComponent implements OnInit {
 
-  public datasets: any;
-  public data: any;
-  public salesChart;
-  public clicked: boolean = true;
-  public clicked1: boolean = false;
+  pie1: any; pie2: any; pie3: any;
+  bar1: any; bar2: any; bar3: any;
+  line1: any; line2: any; line3: any;
 
-  ngOnInit() {
+  constructor(private reports: ReportsService) {}
 
-    this.datasets = [
-      [0, 20, 10, 30, 15, 40, 20, 60, 60],
-      [0, 20, 5, 25, 10, 30, 15, 40, 40]
-    ];
-    this.data = this.datasets[0];
+  ngOnInit(): void {
 
+    // PIE CHARTS
+    this.reports.getOrderStatus().subscribe(r =>
+      this.pie1 = {
+        labels: r.labels,
+        datasets: [{ data: r.data, backgroundColor: ['#5e72e4','#fb6340','#f5365c'] }]
+      }
+    );
 
-    var chartOrders = document.getElementById('chart-orders');
+    this.reports.getMotoUsage().subscribe(r =>
+      this.pie2 = {
+        labels: r.labels,
+        datasets: [{ data: r.data, backgroundColor: ['#2dce89','#11cdef','#f5365c'] }]
+      }
+    );
 
-    parseOptions(Chart, chartOptions());
+    this.reports.getDayNightSales().subscribe(r =>
+      this.pie3 = {
+        labels: r.labels,
+        datasets: [{ data: r.data, backgroundColor: ['#172b4d','#5e72e4'] }]
+      }
+    );
 
+    // BAR
+    this.reports.getMonthlyOrders().subscribe(r =>
+      this.bar1 = {
+        labels: r.labels,
+        datasets: [{ label: 'Pedidos', data: r.data, backgroundColor: '#5e72e4' }]
+      }
+    );
 
-    var ordersChart = new Chart(chartOrders, {
-      type: 'bar',
-      options: chartExample2.options,
-      data: chartExample2.data
-    });
+    this.reports.getRestaurantSales().subscribe(r =>
+      this.bar2 = {
+        labels: r.labels,
+        datasets: [{ label: 'Ventas', data: r.data, backgroundColor: '#11cdef' }]
+      }
+    );
 
-    var chartSales = document.getElementById('chart-sales');
+    this.reports.getMotoDeliveries().subscribe(r =>
+      this.bar3 = {
+        labels: r.labels,
+        datasets: [{ label: 'Entregas', data: r.data, backgroundColor: '#2dce89' }]
+      }
+    );
 
-    this.salesChart = new Chart(chartSales, {
-			type: 'line',
-			options: chartExample1.options,
-			data: chartExample1.data
-		});
+    // LINE
+    this.reports.getDailyOrders().subscribe(r =>
+      this.line1 = {
+        labels: r.labels,
+        datasets: [{ label: 'Por Día', data: r.data, borderColor: '#5e72e4', fill: false }]
+      }
+    );
+
+    this.reports.getWeeklyRevenue().subscribe(r =>
+      this.line2 = {
+        labels: r.labels,
+        datasets: [{ label: 'Ingresos', data: r.data, borderColor: '#11cdef', fill: false }]
+      }
+    );
+
+    this.reports.getHourlyOrders().subscribe(r =>
+      this.line3 = {
+        labels: r.labels,
+        datasets: [{ label: 'Por Hora', data: r.data, borderColor: '#f5365c', fill: false }]
+      }
+    );
   }
-
-
-  public updateOptions() {
-    this.salesChart.data.datasets[0].data = this.data;
-    this.salesChart.update();
-  }
-
 }

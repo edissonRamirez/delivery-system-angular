@@ -1,0 +1,11 @@
+.chart-card {
+  min-height: 320px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+canvas {
+  max-width: 100% !important;
+  max-height: 260px !important;
+}

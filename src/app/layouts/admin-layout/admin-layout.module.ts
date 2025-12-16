@@ -21,10 +21,10 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     FormsModule,
     HttpClientModule,
     NgbModule,
+    DashboardComponent,
     ClipboardModule
   ],
   declarations: [
-    DashboardComponent,
     UserProfileComponent,
     TablesComponent,
     IconsComponent,

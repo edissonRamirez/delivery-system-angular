@@ -48,14 +48,28 @@
       <tr *ngFor="let item of data">
 
         <td *ngFor="let col of columns">
+
+          <!-- Si NO es template -->
           <ng-container *ngIf="!col.template">
-            {{ item[col.field!] }}
+
+            <!-- ⭐ FORMATO: CURRENCY -->
+            <ng-container *ngIf="col.format === 'currency'; else normalCell">
+              {{ item[col.field!] | currency:'COP':'symbol':'1.0-0' }}
+            </ng-container>
+
+            <!-- FORMATO NORMAL -->
+            <ng-template #normalCell>
+              {{ item[col.field!] }}
+            </ng-template>
+
           </ng-container>
 
+          <!-- Si es template -->
           <ng-container *ngIf="col.template"
                         [ngTemplateOutlet]="col.template"
                         [ngTemplateOutletContext]="{ $implicit: item }">
           </ng-container>
+
         </td>
 
         <td *ngIf="actionsTemplate">
@@ -80,6 +94,7 @@
   <div class="col-md-4 mb-4" *ngFor="let item of data">
     <div class="card shadow-sm p-3 h-100">
 
+      <!-- Mostrar el segundo campo como título (como ya estaba) -->
       <h3 class="font-weight-bold">
         {{ columns[1]?.field ? item[columns[1].field] : '' }}
       </h3>
@@ -88,19 +103,35 @@
 
       <div>
         <div *ngFor="let col of columns.slice(2)">
+
+          <!-- ⭐ SIN TEMPLATE -->
           <div *ngIf="!col.template">
+
             <small class="text-muted">{{ col.header }}</small><br>
-            <span>{{ item[col.field!] }}</span>
+
+            <!-- ⭐ FORMATO CURRENCY -->
+            <ng-container *ngIf="col.format === 'currency'; else cardNormal">
+              <span>{{ item[col.field!] | currency:'COP':'symbol':'1.0-0' }}</span>
+            </ng-container>
+
+            <!-- TEXTO NORMAL -->
+            <ng-template #cardNormal>
+              <span>{{ item[col.field!] }}</span>
+            </ng-template>
+
             <br><br>
           </div>
 
+          <!-- ⭐ TEMPLATE PERSONALIZADO -->
           <div *ngIf="col.template"
                [ngTemplateOutlet]="col.template"
                [ngTemplateOutletContext]="{ $implicit: item }">
           </div>
+
         </div>
       </div>
 
+      <!-- ACCIONES -->
       <div class="text-right mt-auto" *ngIf="actionsTemplate">
         <ng-container 
           [ngTemplateOutlet]="actionsTemplate"

@@ -1,0 +1,130 @@
+<div class="header bg-gradient-primary pb-8 pt-5 pt-md-8"></div>
+
+<div class="container-fluid mt--7">
+
+  <h2 class="mb-4">Dashboard — Reportes</h2>
+
+  <!-- ========================= -->
+  <!--        PIE CHARTS         -->
+  <!-- ========================= -->
+  <div class="row">
+    <div class="col-lg-4 mb-4">
+      <div class="card shadow">
+        <div class="card-header"><h5>Estado de pedidos</h5></div>
+        <div class="card-body">
+          <canvas baseChart 
+            [data]="pie1" 
+            chartType="pie">
+          </canvas>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-4 mb-4">
+      <div class="card shadow">
+        <div class="card-header"><h5>Uso de motocicletas</h5></div>
+        <div class="card-body">
+          <canvas baseChart 
+            [data]="pie2" 
+            chartType="pie">
+          </canvas>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-4 mb-4">
+      <div class="card shadow">
+        <div class="card-header"><h5>Ventas Día vs Noche</h5></div>
+        <div class="card-body">
+          <canvas baseChart 
+            [data]="pie3" 
+            chartType="pie">
+          </canvas>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================= -->
+  <!--       BAR CHARTS          -->
+  <!-- ========================= -->
+  <div class="row">
+    <div class="col-lg-4 mb-4">
+      <div class="card shadow">
+        <div class="card-header"><h5>Pedidos Mensuales</h5></div>
+        <div class="card-body">
+          <canvas baseChart 
+            [data]="bar1" 
+            chartType="bar">
+          </canvas>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-4 mb-4">
+      <div class="card shadow">
+        <div class="card-header"><h5>Ventas por Restaurante</h5></div>
+        <div class="card-body">
+          <canvas baseChart 
+            [data]="bar2" 
+            chartType="bar">
+          </canvas>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-4 mb-4">
+      <div class="card shadow">
+        <div class="card-header"><h5>Entregas por Motocicleta</h5></div>
+        <div class="card-body">
+          <canvas baseChart 
+            [data]="bar3" 
+            chartType="bar">
+          </canvas>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================= -->
+  <!--       LINE CHARTS         -->
+  <!-- ========================= -->
+  <div class="row">
+    <div class="col-lg-4 mb-4">
+      <div class="card shadow">
+        <div class="card-header"><h5>Pedidos por Día</h5></div>
+        <div class="card-body">
+          <canvas baseChart 
+            [data]="line1" 
+            chartType="line">
+          </canvas>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-4 mb-4">
+      <div class="card shadow">
+        <div class="card-header"><h5>Ingresos Semanales</h5></div>
+        <div class="card-body">
+          <canvas baseChart 
+            [data]="line2" 
+            chartType="line">
+          </canvas>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-4 mb-4">
+      <div class="card shadow">
+        <div class="card-header"><h5>Pedidos por Hora</h5></div>
+        <div class="card-body">
+          <canvas baseChart 
+            [data]="line3" 
+            chartType="line">
+          </canvas>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>

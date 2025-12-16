@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { User } from '../models/User';
 import { HttpClient } from '@angular/common/http';
-import { Router } from '@angular/router';
 import { environment } from 'src/environments/environment';
 
 @Injectable({
@@ -10,9 +9,10 @@ import { environment } from 'src/environments/environment';
 })
 export class SecurityService {
 
-  theUser = new BehaviorSubject<User>(new User);
-  constructor(private http: HttpClient) { 
-    this.verifyActualSession()
+  theUser = new BehaviorSubject<User>(new User());
+
+  constructor(private http: HttpClient) {
+    this.verifyActualSession();
   }
 
   /**
@@ -24,6 +24,7 @@ export class SecurityService {
   login(user: User): Observable<any> {
     return this.http.post<any>(`${environment.url_security}/login`, user);
   }
+
   /*
   Guardar la información de usuario en el local storage
   */
@@ -33,71 +34,49 @@ export class SecurityService {
       name: dataSesion["name"],
       email: dataSesion["email"],
       password: "",
-      //role:dataSesion["role"],
-      token: dataSesion["token"]
+      token: dataSesion["token"],
+      photo: dataSesion["photo"] || "assets/img/theme/team-4-800x800.jpg" // fallback
     };
+
     localStorage.setItem('sesion', JSON.stringify(data));
     this.setUser(data);
   }
-  /**
-    * Permite actualizar la información del usuario
-    * que acabó de validarse correctamente
-    * @param user información del usuario logueado
-  */
+
   setUser(user: User) {
     this.theUser.next(user);
   }
-  /**
-  * Permite obtener la información del usuario
-  * con datos tales como el identificador y el token
-  * @returns
-  */
+
   getUser() {
     return this.theUser.asObservable();
   }
+
   /**
     * Permite obtener la información de usuario
     * que tiene la función activa y servirá
     * para acceder a la información del token
 */
+
   public get activeUserSession(): User {
     return this.theUser.value;
   }
 
-
-  /**
-  * Permite cerrar la sesión del usuario
-  * que estaba previamente logueado
-  */
   logout() {
     localStorage.removeItem('sesion');
     this.setUser(new User());
   }
-  /**
-  * Permite verificar si actualmente en el local storage
-  * existe información de un usuario previamente logueado
-  */
+
   verifyActualSession() {
     let actualSesion = this.getSessionData();
     if (actualSesion) {
       this.setUser(JSON.parse(actualSesion));
     }
   }
-  /**
-  * Verifica si hay una sesion activa
-  * @returns
-  */
+
   existSession(): boolean {
-    let sesionActual = this.getSessionData();
-    return (sesionActual) ? true : false;
+    return !!this.getSessionData();
   }
-  /**
-  * Permite obtener los dato de la sesión activa en el
-  * local storage
-  * @returns
-  */
+
   getSessionData() {
-    let sesionActual = localStorage.getItem('sesion');
-    return sesionActual;
+    return localStorage.getItem('sesion');
   }
 }
